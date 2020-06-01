@@ -1,5 +1,5 @@
 import os
-import json
+import math
 import requests
 
 
@@ -20,8 +20,8 @@ class GeoCodingAPIHelper:
 
     def _extract_info_from_result(self, result):
         return {
-            'formatted':result['formatted'],
-            'geometry':result['geometry']
+            'formatted': result['formatted'],
+            'geometry': result['geometry']
         }
 
     def query_api(self, query):
@@ -29,7 +29,7 @@ class GeoCodingAPIHelper:
         response = requests.get(uri)
         results = response.json()['results']
         formatted_results = [self._extract_info_from_result(result) for result in results]
-        return json.dumps(formatted_results)
+        return formatted_results
 
     def get_place_by_coordenates(self, lat, lng):
         """
@@ -41,16 +41,26 @@ class GeoCodingAPIHelper:
         results = self.query_api(query)
         return results
 
-    def get_distance_between_two_places(self, first_place, second_place):
+    def get_distance_between_two_places(self, lat1, lng1, lat2, lng2):
         """
-        :param first_place:
-        :param second_place:
-        :return:
+        :param lat1: latitude in start_place
+        :param lng1: longitude in start_place
+        :param lat2: latitude in end_place
+        :param lng2: longitude in end_place
+        :return: the distance between the two points
         """
-        pass
+        EARTH_RADIO = 6373  # km
+        lat1_rads = math.radians(lat1)
+        lng1_rads = math.radians(lng1)
+        lat2_rads = math.radians(lat2)
+        lng2_rads = math.radians(lng2)
 
+        diff_long = lng2_rads - lng1_rads
+        diff_lat = lat2_rads - lat1_rads
 
+        a = math.sin(diff_lat / 2) ** 2 + math.cos(lat1_rads) * math.cos(lat2_rads) * \
+            math.sin(diff_long / 2) ** 2  # haversine formule
 
-
-
-
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+        distance = EARTH_RADIO * c
+        return distance
