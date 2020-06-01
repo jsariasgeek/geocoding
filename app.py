@@ -22,7 +22,7 @@ def geocoding_by_place_name():
         'results':results
     })
 
-@app.route('/geocoding_by_coordenate')
+@app.route('/geocoding_by_coordenates')
 def get_place_name_by_coordenates():
     """
     lat:latitude,
@@ -40,10 +40,10 @@ def get_place_name_by_coordenates():
 
 @app.route('/get_distance')
 def get_distance_between_two_places():
-    lat_start_place = float(request.args.get('lat_start_place'))
-    lng_start_place = float(request.args.get('lng_start_place'))
-    lat_end_place = float(request.args.get('lat_end_place'))
-    lng_end_place = float(request.args.get('lng_end_place'))
+    lat_start_place = request.args.get('lat_start_place')
+    lng_start_place = request.args.get('lng_start_place')
+    lat_end_place = request.args.get('lat_end_place')
+    lng_end_place = request.args.get('lng_end_place')
     """
     :return: This endpoint returns the distance between two places
     """
@@ -54,10 +54,10 @@ def get_distance_between_two_places():
 
     return json.dumps({
         'result': geocoding_helper.get_distance_between_two_places(
-            lat_start_place,
-            lng_start_place,
-            lat_end_place,
-            lng_end_place
+            float(lat_start_place),
+            float(lng_start_place),
+            float(lat_end_place),
+            float(lng_end_place)
         )
     })
 
