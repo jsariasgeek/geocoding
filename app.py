@@ -10,14 +10,17 @@ geocoding_helper = GeoCodingAPIHelper()
 
 @app.route('/geocoding_by_place_name')
 def geocoding_by_place_name():
+    """
+       :return: Coordenates Given A Place Name or Address
+       """
     place_name = request.args.get('place_name')
     if not place_name:
         return ('You need to pass the place name as parameter', 400)
-    """
-    :return: Coordenates Given A Place Name or Address
-    """
+
     results = geocoding_helper.query_api(place_name)
-    return json.dumps(results)
+    return json.dumps({
+        'results':results
+    })
 
 @app.route('/geocoding_by_coordenate')
 def get_place_name_by_coordenates():
@@ -31,7 +34,9 @@ def get_place_name_by_coordenates():
     if not lat or not lng:
         return "You need to pass the lat and lng args", 400
     results = geocoding_helper.get_place_by_coordenates(lat, lng)
-    return results
+    return {
+        'results':results
+    }
 
 @app.route('/get_distance')
 def get_distance_between_two_places():
@@ -57,4 +62,4 @@ def get_distance_between_two_places():
     })
 
 if __name__ == "__main__":
-    app.run('0.0.0.0', 5000)
+    app.run('0.0.0.0')
