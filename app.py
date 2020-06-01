@@ -1,10 +1,12 @@
 import json
 
 from flask import Flask, request
+from flask_cors import CORS
 
 from helpers.geocoding_helper import GeoCodingAPIHelper
 
 app = Flask(__name__)
+CORS(app)
 
 geocoding_helper = GeoCodingAPIHelper()
 
