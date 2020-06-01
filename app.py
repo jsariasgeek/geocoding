@@ -40,13 +40,13 @@ def get_place_name_by_coordenates():
 
 @app.route('/get_distance')
 def get_distance_between_two_places():
+    """
+    :return: This endpoint returns the distance between two places
+    """
     lat_start_place = request.args.get('lat_start_place')
     lng_start_place = request.args.get('lng_start_place')
     lat_end_place = request.args.get('lat_end_place')
     lng_end_place = request.args.get('lng_end_place')
-    """
-    :return: This endpoint returns the distance between two places
-    """
     parameters_are_valid = lat_start_place and lng_start_place and lat_end_place and lng_end_place
 
     if not parameters_are_valid:
